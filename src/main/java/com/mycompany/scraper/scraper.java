@@ -74,7 +74,7 @@ public class scraper {
     }
 
     public static void scrapeSerieA(String year) throws InterruptedException, IOException {
-        System.out.println("--------------------------");
+        System.out.println("-------------------------- "+year);
         System.out.println("Scraping at\t" + baseUrl + year + "/");
         driver.get(baseUrl + year + "/");
         int c = 0;
@@ -96,8 +96,7 @@ public class scraper {
         Document doc = Jsoup.parse(driver.getPageSource());
         Elements list = doc.getElementsByClass("blocks");
         List<WebElement> listSelenium = driver.findElements(By.cssSelector("a.score_link"));
-        System.out.println(listSelenium.size());
-        System.out.println("# matches:\t" + list.size());
+        System.out.println(list.size()+ " in season "+year);
         PrintWriter writer = new PrintWriter(baseFilePath + year + "matches.txt", "UTF-8");
 
         int index = 0;
@@ -169,11 +168,9 @@ public class scraper {
         writer.flush();
         writer.close();
 
-        System.out.println("--------------------------");
     }
 
     public static void scrapeClassifica(String year) throws IOException {
-        System.out.println("--------------------------");
         System.out.println("Scraping classifica at\t" + baseUrl + year + "/");
         PrintWriter writer = new PrintWriter(baseFilePath + year + "standings.txt", "UTF-8");
         driver.get(baseUrl + year + "/standings/");
@@ -205,6 +202,13 @@ public class scraper {
         writer.flush();
         writer.close();
 
+        System.out.println("--------------------------");
+    }
+
+    public static void shutdownPC(int time) throws IOException {
+        Runtime r = Runtime.getRuntime();
+        // Shutdown system time mean, time to wait before my system will shutdow or restart
+        r.exec("shutdown -s -t " + time);
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
@@ -212,7 +216,7 @@ public class scraper {
         initPhantomJS();
         for (int year = 1993; year < 2019; year++) {
             String s = year + "-" + (year + 1);
-                scrapeSerieA(s);
+            scrapeSerieA(s);
             scrapeClassifica(s);
         }
 
@@ -222,7 +226,10 @@ public class scraper {
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         String dateFormatted = formatter.format(date);
         System.out.println("End of script. Elapsed " + dateFormatted);
-
+        PrintWriter writer = new PrintWriter(baseFilePath + "stats.txt", "UTF-8");
+        writer.println("End of script. Elapsed " + dateFormatted);
+        writer.close();
+        shutdownPC(5);
     }
 
 }
