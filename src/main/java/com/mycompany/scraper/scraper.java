@@ -251,6 +251,7 @@ public class scraper {
         //String championship = "eng-premier-league";
         //END OF PARAMETERS
         
+        timer.start();
         
         List<String> months = new ArrayList<>(Arrays.asList("gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"));
         String base = "http://www.calcio.com";
@@ -557,6 +558,7 @@ public class scraper {
         writer.println(league.toString());
         writer.close();
         
+        timer.elapsed();
     }
 
 }
