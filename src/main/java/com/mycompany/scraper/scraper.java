@@ -65,8 +65,6 @@ public class scraper {
         //String championship = "eng-premier-league";
         //END OF PARAMETERS
         
-        Timer timer = new Timer();
-        timer.start();
         
         List<String> months = new ArrayList<>(Arrays.asList("gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"));
         String base = "http://www.calcio.com";
@@ -388,19 +386,14 @@ public class scraper {
         PrintWriter writer = new PrintWriter(filename+".txt", "UTF-8");
         writer.println(league.toString());
         writer.close();
-        
-        timer.elapsed(); 
     }
     
     public static void main(String[] args) throws InterruptedException, IOException {
         String[] campionati = {/*"ita-serie-a", "bundesliga", "eng-premier-league", "fra-ligue-1", */"esp-primera-division"};
-        Timer t = new Timer();
-        t.start();
         for(String campionato : campionati){           
             scrapeCampionato(campionato, campionato);
         }
         System.out.println("----------------SCRAPING OVER----------------");
-        t.elapsed();
     }
 
 }
